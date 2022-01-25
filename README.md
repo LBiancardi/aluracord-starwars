@@ -1,4 +1,6 @@
 # "May the force be with you"
+<div id="top"></div>
+
 Project created with @alura with the support from @omariosouto @peas
 <br />
 <br />
@@ -17,7 +19,7 @@ Project created with @alura with the support from @omariosouto @peas
     <a href="https://github.com/LBiancardi/aluracord-starwars"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/LBiancardi/aluracord-starwars">View Demo</a>
+    <a href="https://starscord-starwars.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/LBiancardi/aluracord-starwars/issues">Report Bug</a>
     ·
@@ -46,7 +48,7 @@ Project created with @alura with the support from @omariosouto @peas
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://starscord-starwars.vercel.app/)
 
 Project created with the idea to practice React, Next.Js, Responsive websites, create a website from scratch and deploy.
 
@@ -56,7 +58,7 @@ Here's my goals:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Built With
+## Built With
 
 * [Next.js](https://nextjs.org/)
 * [React.js](https://reactjs.org/)
@@ -77,7 +79,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-### Learn More
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -86,15 +90,19 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- DEPLOY -->
-### Deploy on Vercel
+## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- CONTRIBUTING -->
-### Contributing
+## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -110,7 +118,7 @@ Don't forget to give the project a star! Thanks again!
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTACT -->
-### Contact
+## Contact
 
 Luis Biancardi - luisfbiancardi@gmail.com
 
@@ -124,4 +132,4 @@ Project Link: [https://github.com/LBiancardi/aluracord-starwars](https://github.
 [contributors-url]: https://github.com/LBiancardi/aluracord-starwars/graphs/contributors
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/luis-biancardi/
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: public/screenshot.png
