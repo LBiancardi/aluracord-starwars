@@ -32,14 +32,14 @@ function GlobalStyle() {
   );
 }
 
-function Titulo(props) {
+function Title(props) {
   const Tag = props.tag || "h1";
   return (
     <>
       <Tag>{props.children}</Tag>
       <style jsx>{`
         ${Tag} {
-          color: ${appConfig.theme.colors.neutrals["900"]};
+          color: ${appConfig.theme.colors.neutrals["100"]};
           font-size: 24px;
           font-weight: 600;
         }
@@ -47,20 +47,6 @@ function Titulo(props) {
     </>
   );
 }
-
-// Componente React
-// function HomePage() {
-//   // JSX
-//   return (
-//     <div>
-//       <GlobalStyle />
-//       <Title tag="h1">Welcome Back.</Title>
-//       <h2>Discord - Alura Matrix</h2>
-//     </div>
-//   );
-// }
-
-// export default HomePage;
 
 export default function PaginaInicial() {
   const username = "LBiancardi";
@@ -74,8 +60,11 @@ export default function PaginaInicial() {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: appConfig.theme.colors.primary[500],
-          backgroundImage:
-            "url(https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg)",
+          // backgroundImage: "url('/starwarsBg2.jpg')",
+          backgroundImage: {
+            xs: "url('/starwarsBg--Mobile.jpg')",
+            xl: "url(https://virtualbackgrounds.site/wp-content/uploads/2020/07/star-wars-imperial-star-destroyer-bridge-1536x864.jpg)",
+          },
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundBlendMode: "multiply",
@@ -92,11 +81,13 @@ export default function PaginaInicial() {
             },
             width: "100%",
             maxWidth: "700px",
+            border: "solid 2px",
             borderRadius: "5px",
+            borderColor: appConfig.theme.colors.neutrals[600],
             padding: "32px",
             margin: "16px",
             boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-            backgroundColor: appConfig.theme.colors.neutrals[700],
+            backgroundColor: appConfig.theme.colors.neutrals["000"],
           }}
         >
           {/* Formulário */}
@@ -112,12 +103,12 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo tag="h2">Welcome back!</Titulo>
+            <Title tag="h2">May the force be with you {username}!</Title>
             <Text
               variant="body3"
               styleSheet={{
                 marginBottom: "32px",
-                color: appConfig.theme.colors.neutrals[300],
+                color: appConfig.theme.colors.neutrals[400],
               }}
             >
               {appConfig.name}
@@ -133,18 +124,67 @@ export default function PaginaInicial() {
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
               }}
+              placeholder="Username"
             />
             <Button
               type="submit"
-              label="Entrar"
+              label="Log in"
               fullWidth
               buttonColors={{
-                contrastColor: appConfig.theme.colors.neutrals["000"],
+                contrastColor: appConfig.theme.colors.neutrals["050"],
                 mainColor: appConfig.theme.colors.primary[500],
                 mainColorLight: appConfig.theme.colors.primary[400],
                 mainColorStrong: appConfig.theme.colors.primary[600],
               }}
             />
+
+            <Box
+              styleSheet={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "left",
+                justifyContent: "left",
+                gap: "0.75rem",
+                width: "100%",
+                textAlign: "center",
+                marginTop: "1rem",
+              }}
+            >
+              <Button
+                type="submit"
+                label="Dark Side"
+                styleSheet={{
+                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                  color: appConfig.theme.colors.neutrals[100],
+                  transition: "0.5s",
+                  hover: {
+                    backgroundColor:
+                      appConfig.theme.colors.starWars["darkSideBg--hover"],
+                    color:
+                      appConfig.theme.colors.starWars["darkSideText--hover"],
+                  },
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("I was clicked");
+                }}
+              />
+              <Button
+                type="submit"
+                label="Light Side"
+                styleSheet={{
+                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                  color: appConfig.theme.colors.neutrals[100],
+                  transition: "0.5s",
+                  hover: {
+                    backgroundColor:
+                      appConfig.theme.colors.starWars["lightSideBg--hover"],
+                    color:
+                      appConfig.theme.colors.starWars["lightSideText--hover"],
+                  },
+                }}
+              />
+            </Box>
           </Box>
           {/* Formulário */}
 
@@ -156,9 +196,9 @@ export default function PaginaInicial() {
               alignItems: "center",
               maxWidth: "200px",
               padding: "16px",
-              backgroundColor: appConfig.theme.colors.neutrals[800],
+              // backgroundColor: appConfig.theme.colors.neutrals['800'],
               border: "1px solid",
-              borderColor: appConfig.theme.colors.neutrals[999],
+              borderColor: appConfig.theme.colors.primary["700"],
               borderRadius: "10px",
               flex: 1,
               minHeight: "240px",

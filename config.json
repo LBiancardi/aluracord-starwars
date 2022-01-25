@@ -1,5 +1,5 @@
 {
-  "name": "Aluracord - Peaky Blinders",
+  "name": "Starscord - Star Wars",
   "theme": {
     "colors": {
       "primary": {
@@ -15,7 +15,7 @@
         "900": "#222430"
       },
       "neutrals": {
-        "000": "#FFFFFF",
+        "000": "rgba(34, 36, 48,0.80)",
         "050": "#F5F7FA",
         "100": "#E4E7EB",
         "200": "#CBD2D9",
@@ -27,6 +27,12 @@
         "800": "#181F25",
         "900": "#101418",
         "999": "#080A0C"
+      },
+      "starWars": {
+        "lightSideText--hover": "#1e90ff",
+        "lightSideBg--hover": "#fff68f",
+        "darkSideText--hover": "#ff0000",
+        "darkSideBg--hover": "#000000"
       }
     }
   }
