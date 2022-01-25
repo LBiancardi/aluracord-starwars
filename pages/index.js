@@ -19,9 +19,33 @@ function Title(props) {
   );
 }
 
+function TitleText(props) {
+  return props === "" ? "Choose your side" : `Welcome to the ${props} side`;
+}
+
+const gitHubRequest = async (username) => {
+  try {
+    const res = await fetch(`https://api.github.com/users/${username}`);
+    const userInfos = await res.json();
+    const mainInfos = ["Luis", "true", "Huntington Beach, CA"];
+    return mainInfos;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("");
   const roteamento = useRouter();
+  const [showUserImage, setUserImage] = React.useState("none");
+  const [formPosition, setFormPosition] = React.useState("center");
+  const [theme, setTheme] = React.useState("");
+  const [themeBgDesktop, setThemeBgDesktop] = React.useState(
+    "https://virtualbackgrounds.site/wp-content/uploads/2020/07/star-wars-imperial-star-destroyer-bridge-1536x864.jpg"
+  );
+  const [themeBgMobile, setThemeBgMobile] = React.useState(
+    "starwarsBg--Mobile.jpg"
+  );
 
   return (
     <>
@@ -31,10 +55,9 @@ export default function PaginaInicial() {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: appConfig.theme.colors.primary[500],
-          // backgroundImage: "url('/starwarsBg2.jpg')",
           backgroundImage: {
-            xs: "url('/starwarsBg--Mobile.jpg')",
-            xl: "url(https://virtualbackgrounds.site/wp-content/uploads/2020/07/star-wars-imperial-star-destroyer-bridge-1536x864.jpg)",
+            xs: `url(${themeBgMobile})`,
+            lg: `url(${themeBgDesktop})`,
           },
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -45,7 +68,7 @@ export default function PaginaInicial() {
           styleSheet={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: `${formPosition}`,
             flexDirection: {
               xs: "column",
               sm: "row",
@@ -66,9 +89,9 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (event) {
               event.preventDefault();
-              roteamento.push("/chat");
-              // console.log(`${username}`);
-              // window.location.href = "/chat";
+              username.length >= 2
+                ? roteamento.push("/chat")
+                : roteamento.push("/404");
             }}
             styleSheet={{
               display: "flex",
@@ -80,7 +103,9 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Title tag="h2">May the force be with you {username}!</Title>
+            <Title tag="h2">
+              {username} {TitleText(theme)}
+            </Title>
             <Text
               variant="body3"
               styleSheet={{
@@ -98,6 +123,9 @@ export default function PaginaInicial() {
                 // Onde esta o valor?
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
+                valor.length >= 2
+                  ? (setUserImage("flex"), setFormPosition("space-between"))
+                  : (setUserImage("none"), setFormPosition("center"));
                 setUsername(valor);
               }}
               fullWidth
@@ -149,9 +177,11 @@ export default function PaginaInicial() {
                       appConfig.theme.colors.starWars["darkSideText--hover"],
                   },
                 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log(`${username}`);
+                onClick={function (event) {
+                  event.preventDefault();
+                  setTheme("dark");
+                  setThemeBgDesktop("/darkSideBg.png");
+                  setThemeBgMobile("/darkSideBgMobile.jpg");
                 }}
               />
               <Button
@@ -168,9 +198,11 @@ export default function PaginaInicial() {
                       appConfig.theme.colors.starWars["lightSideText--hover"],
                   },
                 }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  console.log(`${username}`);
+                onClick={function (event) {
+                  event.preventDefault();
+                  setTheme("light");
+                  setThemeBgDesktop("/lightSideBg.jpg");
+                  setThemeBgMobile("/lightSideBgMobile.jpg");
                 }}
               />
             </Box>
@@ -180,7 +212,7 @@ export default function PaginaInicial() {
           {/* Photo Area */}
           <Box
             styleSheet={{
-              display: "flex",
+              display: `${showUserImage}`,
               flexDirection: "column",
               alignItems: "center",
               maxWidth: "200px",

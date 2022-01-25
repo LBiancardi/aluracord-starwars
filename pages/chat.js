@@ -1,3 +1,19 @@
+import { Box, Button, Text, TextField, Image } from "@skynexui/components";
+import { useRouter } from "next/router";
+
 export default function PaginaDoChat() {
-  return <div>Chat page</div>;
+  const roteamento = useRouter();
+
+  return (
+    <div>
+      <p>Chat Page under construction...</p>
+      <Button
+        type="submit"
+        label="Home"
+        onClick={function goBack() {
+          roteamento.push("/");
+        }}
+      />
+    </div>
+  );
 }
