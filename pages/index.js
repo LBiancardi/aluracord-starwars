@@ -166,7 +166,7 @@ export default function PaginaInicial() {
                 }}
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("I was clicked");
+                  console.log(`${username}`);
                 }}
               />
               <Button
@@ -182,6 +182,10 @@ export default function PaginaInicial() {
                     color:
                       appConfig.theme.colors.starWars["lightSideText--hover"],
                   },
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log(`${username}`);
                 }}
               />
             </Box>
