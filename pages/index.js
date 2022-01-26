@@ -90,7 +90,10 @@ export default function PaginaInicial() {
             onSubmit={function (event) {
               event.preventDefault();
               username.length >= 2
-                ? roteamento.push("/chat")
+                ? (sessionStorage.setItem("user", username),
+                  roteamento.push("/chat"),
+                  sessionStorage.setItem("mobileBg", themeBgMobile),
+                  sessionStorage.setItem("desktopBg", themeBgDesktop))
                 : roteamento.push("/404");
             }}
             styleSheet={{
