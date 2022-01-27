@@ -92,8 +92,8 @@ export default function PaginaInicial() {
               username.length >= 2
                 ? (sessionStorage.setItem("user", username),
                   roteamento.push("/chat"),
-                  sessionStorage.setItem("mobileBg", themeBgMobile),
-                  sessionStorage.setItem("desktopBg", themeBgDesktop))
+                  localStorage.setItem("mobileBg", themeBgMobile),
+                  localStorage.setItem("desktopBg", themeBgDesktop))
                 : roteamento.push("/404");
             }}
             styleSheet={{

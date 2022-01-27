@@ -19,14 +19,22 @@ export default function ChatPage() {
   */
 
   // ./Sua lógica vai aqui
+  function handleDeleteMessage(id) {
+    setListaDeMensagens((old) => {
+      return old.filter((item) => item.id !== id);
+    });
+  }
+
   function handleNovaMensage(novaMensagem) {
     const mensagem = {
       id: listaDeMensagens.length + 1,
       from: sessionStorage.getItem("user"),
       texto: novaMensagem,
     };
-    setListaDeMensagens([mensagem, ...listaDeMensagens]);
-    setMessagem("");
+    if (novaMensagem.length > 0) {
+      setListaDeMensagens([mensagem, ...listaDeMensagens]);
+      setMessagem("");
+    }
   }
 
   return (
@@ -37,8 +45,8 @@ export default function ChatPage() {
         justifyContent: "center",
         backgroundColor: appConfig.theme.colors.primary[500],
         backgroundImage: {
-          xs: `url(${sessionStorage.getItem("mobileBg")})`,
-          lg: `url(${sessionStorage.getItem("desktopBg")})`,
+          xs: `url(${localStorage.getItem("mobileBg")})`,
+          lg: `url(${localStorage.getItem("desktopBg")})`,
         },
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
@@ -53,7 +61,7 @@ export default function ChatPage() {
           flex: 1,
           boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
           borderRadius: "5px",
-          backgroundColor: appConfig.theme.colors.primary['000'],
+          backgroundColor: appConfig.theme.colors.primary["000"],
           height: "100%",
           maxWidth: "95%",
           maxHeight: "95vh",
@@ -67,19 +75,21 @@ export default function ChatPage() {
             display: "flex",
             flex: 1,
             height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals['000'],
+            backgroundColor: appConfig.theme.colors.neutrals["000"],
             flexDirection: "column",
             borderRadius: "5px",
             padding: "16px",
           }}
         >
-          {/* <MessageList mensagens={[]} /> */}
-          <MessageList mensagem={listaDeMensagens} />
+          <MessageList
+            mensagem={listaDeMensagens}
+            onDelete={handleDeleteMessage}
+          />
           <Box
             as="form"
             styleSheet={{
               display: "flex",
-              alignItems: "center",
+              alignItems: "stretch",
             }}
           >
             <TextField
@@ -105,6 +115,42 @@ export default function ChatPage() {
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: "12px",
                 color: appConfig.theme.colors.neutrals[200],
+                hover: {
+                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                },
+              }}
+            />
+            <Button
+              type="submit"
+              onClick={(event) => {
+                event.preventDefault();
+                handleNovaMensage(mensagem);
+              }}
+              label={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-send"
+                >
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              }
+              styleSheet={{
+                backgroundColor: appConfig.theme.colors.neutrals[800],
+                color: appConfig.theme.colors.neutrals[100],
+                transition: "0.5s",
+                marginBottom: "6px",
+                hover: {
+                  backgroundColor: appConfig.theme.colors.neutrals[900],
+                },
               }}
             />
           </Box>
@@ -139,7 +185,6 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log("MessageList", props);
   return (
     <Box
       tag="ul"
@@ -169,30 +214,55 @@ function MessageList(props) {
           >
             <Box
               styleSheet={{
+                display: "flex",
+                justifyContent: "space-between",
                 marginBottom: "8px",
               }}
             >
-              <Image
-                styleSheet={{
-                  width: "20px",
-                  height: "20px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  marginRight: "8px",
-                }}
-                src={`https://github.com/${mensagem.from}.png`}
-              />
-              <Text tag="strong">{mensagem.from}</Text>
-              <Text
-                styleSheet={{
-                  fontSize: "10px",
-                  marginLeft: "8px",
-                  color: appConfig.theme.colors.neutrals[300],
-                }}
-                tag="span"
-              >
-                {new Date().toLocaleDateString()}
-              </Text>
+              <Box>
+                <Image
+                  styleSheet={{
+                    width: "20px",
+                    height: "20px",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                    marginRight: "8px",
+                  }}
+                  src={`https://github.com/${mensagem.from}.png`}
+                />
+                <Text tag="strong">{mensagem.from}</Text>
+                <Text
+                  styleSheet={{
+                    fontSize: "10px",
+                    marginLeft: "8px",
+                    color: appConfig.theme.colors.neutrals[300],
+                  }}
+                  tag="span"
+                >
+                  {new Date().toLocaleDateString()}
+                </Text>
+              </Box>
+              <Box>
+                <Button
+                  key={mensagem.id}
+                  type="submit"
+                  onClick={() => {
+                    return props.onDelete(mensagem.id);
+                  }}
+                  label="X"
+                  styleSheet={{
+                    backgroundColor: "rgba(180,60,18,1)",
+                    borderRadius: "100px",
+                    color: appConfig.theme.colors.neutrals[100],
+                    fontSize: "1.2em",
+                    fontWeight: "bold",
+                    transition: "0.5s",
+                    hover: {
+                      backgroundColor: "rgba(180,60,18,0.7)",
+                    },
+                  }}
+                />
+              </Box>
             </Box>
             {mensagem.texto}
           </Text>
