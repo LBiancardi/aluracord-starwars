@@ -27,8 +27,8 @@ const gitHubRequest = async (username) => {
   try {
     const res = await fetch(`https://api.github.com/users/${username}`);
     const userInfos = await res.json();
-    const mainInfos = ["Luis", "true", "Huntington Beach, CA"];
-    return mainInfos;
+    const location = userInfos.location;
+    return location;
   } catch (err) {
     console.error(err);
   }
@@ -36,6 +36,7 @@ const gitHubRequest = async (username) => {
 
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("");
+  const [location, setLocation] = React.useState("");
   const roteamento = useRouter();
   const [showUserImage, setUserImage] = React.useState("none");
   const [formPosition, setFormPosition] = React.useState("center");
@@ -127,8 +128,11 @@ export default function PaginaInicial() {
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
                 valor.length >= 2
-                  ? (setUserImage("flex"), setFormPosition("space-between"))
-                  : (setUserImage("none"), setFormPosition("center"));
+                  ? (setUserImage("flex"),
+                    setFormPosition("space-between"))
+                  : (setUserImage("none"),
+                    setFormPosition("center"),
+                    setLocation(""));
                 setUsername(valor);
               }}
               fullWidth
@@ -246,6 +250,16 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
+            {/* <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[200],
+                marginTop: "0.5rem",
+                backgroundColor: appConfig.theme.colors.neutrals[900],
+                padding: "3px 10px",
+                borderRadius: "1000px",
+              }}
+            ></Text> */}
           </Box>
           {/* Photo Area */}
         </Box>
