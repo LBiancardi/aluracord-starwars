@@ -1,9 +1,11 @@
 {
   "name": "Starscord - Star Wars",
+  "backgroundDesk": "starwarsBg--Desktop.jpg",
+  "backgroundMobile": "starwarsBg--Mobile.jpg",
   "theme": {
     "colors": {
       "primary": {
-        "000":"rgba(255, 255, 255,0.20)",
+        "000": "rgba(255, 255, 255,0.20)",
         "050": "#E7E8EE",
         "100": "#C3C6D5",
         "200": "#ABAFC4",

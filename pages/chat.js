@@ -45,8 +45,8 @@ export default function ChatPage() {
         justifyContent: "center",
         backgroundColor: appConfig.theme.colors.primary[500],
         backgroundImage: {
-          xs: `url(${localStorage.getItem("mobileBg")})`,
-          lg: `url(${localStorage.getItem("desktopBg")})`,
+          xs: `url(${appConfig.backgroundMobile})`,
+          lg: `url(${appConfig.backgroundDesk})`,
         },
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

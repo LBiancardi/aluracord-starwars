@@ -42,10 +42,10 @@ export default function PaginaInicial() {
   const [formPosition, setFormPosition] = React.useState("center");
   const [theme, setTheme] = React.useState("");
   const [themeBgDesktop, setThemeBgDesktop] = React.useState(
-    "https://virtualbackgrounds.site/wp-content/uploads/2020/07/star-wars-imperial-star-destroyer-bridge-1536x864.jpg"
+    appConfig.backgroundDesk
   );
   const [themeBgMobile, setThemeBgMobile] = React.useState(
-    "starwarsBg--Mobile.jpg"
+    appConfig.backgroundMobile
   );
 
   return (
@@ -93,8 +93,8 @@ export default function PaginaInicial() {
               username.length >= 2
                 ? (sessionStorage.setItem("user", username),
                   roteamento.push("/chat"),
-                  localStorage.setItem("mobileBg", themeBgMobile),
-                  localStorage.setItem("desktopBg", themeBgDesktop))
+                  (appConfig.backgroundMobile = themeBgMobile),
+                  (appConfig.backgroundDesk = themeBgDesktop))
                 : roteamento.push("/404");
             }}
             styleSheet={{
@@ -128,8 +128,7 @@ export default function PaginaInicial() {
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
                 valor.length >= 2
-                  ? (setUserImage("flex"),
-                    setFormPosition("space-between"))
+                  ? (setUserImage("flex"), setFormPosition("space-between"))
                   : (setUserImage("none"),
                     setFormPosition("center"),
                     setLocation(""));

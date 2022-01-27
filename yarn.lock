@@ -146,10 +146,10 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-12.0.8.tgz#eae6d4c94dc8aae8ba177e2de02080339d0d4563"
   integrity sha512-tTga6OFfO2JS+Yt5hdryng259c/tzNgSWkdiU2E+RBHiysAIOta57n4PJ8iPahOSqEqjaToPI76wM+o441GaNQ==
 
-"@skynexui/components@^1.23.5":
-  version "1.23.5"
-  resolved "https://registry.yarnpkg.com/@skynexui/components/-/components-1.23.5.tgz#de66469bbeee9323c0bceedebb1c4658339277e8"
-  integrity sha512-PoM5nLAML9vG2G8hpW+r6DHuCkeP6hP/8HcPXuhfbiOY0iEJEs0aQBTWpfAUqvJAfBVCrhLPSq2q+Cf14Qu+QA==
+"@skynexui/components@^1.23.9":
+  version "1.23.9"
+  resolved "https://registry.yarnpkg.com/@skynexui/components/-/components-1.23.9.tgz#e7ecc1be5392f63f06ecfaaaa54e704b9dd3d73c"
+  integrity sha512-8jUNPzOUzDvjpWFisQnRh9wzJcbQpzXiDPuAdYS+B1KI85ujc6qCh5NYqdkpi4AdniMANDHt7e4Nmji7dg/Zow==
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.36"
     "@fortawesome/fontawesome-free" "^5.15.4"
@@ -190,9 +190,9 @@
   integrity sha512-HnYpAE1Y6kRyKM/XkEuiRQhTHvkzMBurTHnpFLYLBGPIylZNPs9jJcuOOYWxPLJCSEtmZT0Y8rHDokKN7rRTig==
 
 "@types/node@*":
-  version "17.0.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.10.tgz#616f16e9d3a2a3d618136b1be244315d95bd7cab"
-  integrity sha512-S/3xB4KzyFxYGCppyDt68yzBU9ysL88lSdIah4D6cptdcltc4NCPCAMc0+PCpg/lLIyC7IPvj2Z52OJWeIUkog==
+  version "17.0.12"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.12.tgz#f7aa331b27f08244888c47b7df126184bc2339c5"
+  integrity sha512-4YpbAsnJXWYK/fpTVFlMIcUIho2AYCi4wg5aNPrG1ng7fn/1/RZfCIpRCiBX+12RVa34RluilnvCqD+g3KiSiA==
 
 ansi-regex@^5.0.1:
   version "5.0.1"
