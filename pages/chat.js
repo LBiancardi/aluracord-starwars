@@ -26,6 +26,7 @@ export default function ChatPage() {
       .order("id", { ascending: false })
       .then(({ data }) => {
         setListaDeMensagens(data);
+        setIsLoaded(true);
       });
   }, []);
 
@@ -33,10 +34,6 @@ export default function ChatPage() {
     setListaDeMensagens((old) => {
       return old.filter((item) => item.id !== id);
     });
-  }
-
-  function hovered() {
-    return console.log("I was hovered");
   }
 
   function handleNovaMensage(novaMensagem) {
@@ -57,127 +54,159 @@ export default function ChatPage() {
     }
   }
 
-  return (
-    <Box
-      styleSheet={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: {
-          xs: `url(${appConfig.backgroundMobile})`,
-          lg: `url(${appConfig.backgroundDesk})`,
-        },
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundBlendMode: "multiply",
-        color: appConfig.theme.colors.neutrals["100"],
-      }}
-    >
+  if (!isLoaded) {
+    return (
+      <>
+        <Box
+          styleSheet={{
+            backgroundImage: {
+              xs: `url(${appConfig.backgroundMobile})`,
+              lg: `url(${appConfig.backgroundDesk})`,
+            },
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <img src="errorUser.png" className="carregando" />
+          <Text
+            styleSheet={{
+              color: "white",
+            }}
+          >
+            Loading ...
+          </Text>
+        </Box>
+      </>
+    );
+  }
+
+  if (isLoaded) {
+    return (
       <Box
         styleSheet={{
           display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-          borderRadius: "5px",
-          backgroundColor: appConfig.theme.colors.primary["000"],
-          height: "100%",
-          maxWidth: "95%",
-          maxHeight: "95vh",
-          padding: "32px",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: appConfig.theme.colors.primary[500],
+          backgroundImage: {
+            xs: `url(${appConfig.backgroundMobile})`,
+            lg: `url(${appConfig.backgroundDesk})`,
+          },
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundBlendMode: "multiply",
+          color: appConfig.theme.colors.neutrals["100"],
         }}
       >
-        <Header />
         <Box
           styleSheet={{
-            position: "relative",
             display: "flex",
-            flex: 1,
-            height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals["000"],
             flexDirection: "column",
+            flex: 1,
+            boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
             borderRadius: "5px",
-            padding: "16px",
+            backgroundColor: appConfig.theme.colors.primary["000"],
+            height: "100%",
+            maxWidth: "95%",
+            maxHeight: "95vh",
+            padding: "32px",
           }}
         >
-          <MessageList
-            mensagem={listaDeMensagens}
-            onDelete={handleDeleteMessage}
-          />
+          <Header />
           <Box
-            as="form"
             styleSheet={{
+              position: "relative",
               display: "flex",
-              alignItems: "stretch",
+              flex: 1,
+              height: "80%",
+              backgroundColor: appConfig.theme.colors.neutrals["000"],
+              flexDirection: "column",
+              borderRadius: "5px",
+              padding: "16px",
             }}
           >
-            <TextField
-              value={mensagem}
-              onChange={(event) => {
-                const valor = event.target.value;
-                setMessagem(valor);
+            <MessageList
+              mensagem={listaDeMensagens}
+              onDelete={handleDeleteMessage}
+            />
+            <Box
+              as="form"
+              styleSheet={{
+                display: "flex",
+                alignItems: "stretch",
               }}
-              onKeyPress={(event) => {
-                if (event.key === "Enter") {
+            >
+              <TextField
+                value={mensagem}
+                onChange={(event) => {
+                  const valor = event.target.value;
+                  setMessagem(valor);
+                }}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleNovaMensage(mensagem);
+                  }
+                }}
+                placeholder="Message..."
+                type="textarea"
+                styleSheet={{
+                  width: "100%",
+                  border: "0",
+                  resize: "none",
+                  borderRadius: "5px",
+                  padding: "6px 8px",
+                  backgroundColor: appConfig.theme.colors.neutrals[800],
+                  marginRight: "12px",
+                  color: appConfig.theme.colors.neutrals[200],
+                  hover: {
+                    backgroundColor: appConfig.theme.colors.neutrals[900],
+                  },
+                }}
+              />
+              <Button
+                type="submit"
+                onClick={(event) => {
                   event.preventDefault();
                   handleNovaMensage(mensagem);
+                }}
+                label={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="feather feather-send"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
                 }
-              }}
-              placeholder="Message..."
-              type="textarea"
-              styleSheet={{
-                width: "100%",
-                border: "0",
-                resize: "none",
-                borderRadius: "5px",
-                padding: "6px 8px",
-                backgroundColor: appConfig.theme.colors.neutrals[800],
-                marginRight: "12px",
-                color: appConfig.theme.colors.neutrals[200],
-                hover: {
-                  backgroundColor: appConfig.theme.colors.neutrals[900],
-                },
-              }}
-            />
-            <Button
-              type="submit"
-              onClick={(event) => {
-                event.preventDefault();
-                handleNovaMensage(mensagem);
-              }}
-              label={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-send"
-                >
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-              }
-              styleSheet={{
-                backgroundColor: appConfig.theme.colors.neutrals[800],
-                color: appConfig.theme.colors.neutrals[100],
-                transition: "0.5s",
-                marginBottom: "6px",
-                hover: {
-                  backgroundColor: appConfig.theme.colors.neutrals[900],
-                },
-              }}
-            />
+                styleSheet={{
+                  backgroundColor: appConfig.theme.colors.neutrals[800],
+                  color: appConfig.theme.colors.neutrals[100],
+                  transition: "0.5s",
+                  marginBottom: "6px",
+                  hover: {
+                    backgroundColor: appConfig.theme.colors.neutrals[900],
+                  },
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 }
 
 function Header() {
