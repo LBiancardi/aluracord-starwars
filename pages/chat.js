@@ -138,7 +138,8 @@ export default function ChatPage() {
             borderRadius: "5px",
             backgroundColor: appConfig.theme.colors.primary["000"],
             height: "100%",
-            maxWidth: "95%",
+            width: "100%",
+            maxWidth: "100%",
             maxHeight: "95vh",
             padding: "32px",
           }}
@@ -277,9 +278,11 @@ function MessageList(props) {
         flex: 1,
         color: appConfig.theme.colors.neutrals["200"],
         marginBottom: "16px",
+        width: "100%",
       }}
     >
       {props.mensagem.map((mensagem) => {
+        const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
         const search = "-";
         const replaceWith = "/";
         const date = mensagem.created_at
@@ -297,14 +300,33 @@ function MessageList(props) {
             styleSheet={{
               backgroundColor: appConfig.theme.colors.primary[800],
               borderRadius: "5px",
+              display: "flex",
+              flexDirection: "column",
               padding: "6px",
               marginBottom: "12px",
               wordBreak: "break-word",
+              width: {
+                xs: "90%",
+                md: "85%",
+              },
+              // marginLeft: {
+              //   xs: "10%",
+              //   md: "15%",
+              // },
               hover: {
                 backgroundColor: appConfig.theme.colors.neutrals[700],
               },
             }}
           >
+            <Box
+              styleSheet={{
+                margin: "0.25rem 0",
+              }}
+            >
+              <Text styleSheet={{ display: `${showMoreUserInfo}` }}>
+                Click on my face to see my gitHub account.
+              </Text>
+            </Box>
             <Box
               styleSheet={{
                 display: "flex",
@@ -314,20 +336,27 @@ function MessageList(props) {
             >
               <Box
                 styleSheet={{
-                  alignItems: "center",
+                  alignItems: {
+                    xs: "flex-start",
+                    md: "center",
+                  },
                   display: "flex",
+                  flexWrap: "wrap",
+                  // flexDirection: {
+                  //   xs: "column",
+                  //   md: "row",
+                  // },
                 }}
               >
                 <Link href={`https://github.com/${mensagem.de}`}>
                   <Image
                     title={`Open ${mensagem.de} GitHub`}
                     onMouseEnter={() => {
-                      <Text>More about this user</Text>;
+                      setShowMoreUserInfo("");
                     }}
-                    onMouseLeave={() => console.log("mouse Leave")}
-                    // onClick={() => {
-                    //   console.log("fui clicado");
-                    // }}
+                    onMouseLeave={() => {
+                      setShowMoreUserInfo("none");
+                    }}
                     styleSheet={{
                       width: "30px",
                       height: "30px",
@@ -346,8 +375,15 @@ function MessageList(props) {
                 <Text tag="strong">{mensagem.de}</Text>
                 <Text
                   styleSheet={{
-                    fontSize: "10px",
-                    marginLeft: "8px",
+                    fontSize: "12px",
+                    marginLeft: {
+                      xs: "10px",
+                      sm: "8px",
+                    },
+                    marginTop: {
+                      xs: "5px",
+                      sm: "0",
+                    },
                     color: appConfig.theme.colors.neutrals[300],
                   }}
                   tag="span"
@@ -359,7 +395,14 @@ function MessageList(props) {
                     styleSheet={{
                       fontWeight: "bold",
                       fontSize: "12px",
-                      marginLeft: "25px",
+                      marginLeft: {
+                        xs: "10px",
+                        sm: "25px",
+                      },
+                      marginTop: {
+                        xs: "5px",
+                        sm: "0",
+                      },
                       color: appConfig.theme.colors.neutrals[300],
                       hover: {
                         cursor: "pointer",
@@ -406,8 +449,10 @@ function MessageList(props) {
               {mensagem.texto}
               <Text
                 styleSheet={{
+                  textAlign: "right",
                   fontSize: "10px",
-                  marginLeft: "8px",
+                  marginLeft: "13px",
+                  width: "22%",
                   color: appConfig.theme.colors.neutrals[300],
                 }}
                 tag="span"
