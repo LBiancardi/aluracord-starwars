@@ -122,7 +122,7 @@ export default function PaginaInicial() {
 
             <TextField
               value={username}
-              onChange={function (event) {
+              onChange={async function (event) {
                 // console.log("usuario digitou", event.target.value);
                 // Onde esta o valor?
                 const valor = event.target.value;
@@ -249,7 +249,7 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
-            {/* <Text
+            <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
@@ -258,7 +258,7 @@ export default function PaginaInicial() {
                 padding: "3px 10px",
                 borderRadius: "1000px",
               }}
-            ></Text> */}
+            ></Text>
           </Box>
           {/* Photo Area */}
         </Box>

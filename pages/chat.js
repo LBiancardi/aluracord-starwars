@@ -1,10 +1,30 @@
+// https://www.npmjs.com/package/@supabase/supabase-js --> start supabase yard add @supabase/supabase-js
+
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
+import { createClient } from "@supabase/supabase-js";
+
+// Como fazer AJAX --> https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMyOTMyMiwiZXhwIjoxOTU4OTA1MzIyfQ.D2B8cdDQygVqcbWNFnFHZHryoCUaPXnYBsI1DA4y1C0";
+const SUPABASE_URL = "https://adnlwaiaaxkouadlxgoq.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("mensagens")
+      .select("*")
+      .order("id", { ascending: false })
+      .then(({ data }) => {
+        setListaDeMensagens(data);
+      });
+  }, []);
+
   // Sua lógica vai aqui
   /*
   // USUARIO
@@ -27,12 +47,18 @@ export default function ChatPage() {
 
   function handleNovaMensage(novaMensagem) {
     const mensagem = {
-      id: listaDeMensagens.length + 1,
-      from: sessionStorage.getItem("user"),
+      // id: listaDeMensagens.length + 1,
+      de: sessionStorage.getItem("user"),
       texto: novaMensagem,
     };
     if (novaMensagem.length > 0) {
-      setListaDeMensagens([mensagem, ...listaDeMensagens]);
+      supabaseClient
+        .from("mensagens")
+        .insert([mensagem])
+        .then(({ data }) => {
+          console.log("Criando mensagem: ", data);
+          setListaDeMensagens([data[0], ...listaDeMensagens]);
+        });
       setMessagem("");
     }
   }
@@ -228,9 +254,9 @@ function MessageList(props) {
                     display: "inline-block",
                     marginRight: "8px",
                   }}
-                  src={`https://github.com/${mensagem.from}.png`}
+                  src={`https://github.com/${mensagem.de}.png`}
                 />
-                <Text tag="strong">{mensagem.from}</Text>
+                <Text tag="strong">{mensagem.de}</Text>
                 <Text
                   styleSheet={{
                     fontSize: "10px",
