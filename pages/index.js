@@ -37,9 +37,10 @@ const gitHubRequest = async (username) => {
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("");
   const [location, setLocation] = React.useState("");
+  const [displayInfos, setDisplayInfos] = React.useState("none");
+  const [userIsInvalid, setuserIsInvalid] = React.useState("true");
   const roteamento = useRouter();
-  const [showUserImage, setUserImage] = React.useState("none");
-  const [formPosition, setFormPosition] = React.useState("center");
+  const [showUserImage, setUserImage] = React.useState("/errorUser.png");
   const [theme, setTheme] = React.useState("");
   const [themeBgDesktop, setThemeBgDesktop] = React.useState(
     appConfig.backgroundDesk
@@ -69,7 +70,7 @@ export default function PaginaInicial() {
           styleSheet={{
             display: "flex",
             alignItems: "center",
-            justifyContent: `${formPosition}`,
+            justifyContent: `space-between`,
             flexDirection: {
               xs: "column",
               sm: "row",
@@ -123,15 +124,17 @@ export default function PaginaInicial() {
             <TextField
               value={username}
               onChange={async function (event) {
-                // console.log("usuario digitou", event.target.value);
                 // Onde esta o valor?
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
                 valor.length >= 2
-                  ? (setUserImage("flex"), setFormPosition("space-between"))
-                  : (setUserImage("none"),
-                    setFormPosition("center"),
-                    setLocation(""));
+                  ? (setUserImage(`https://github.com/${valor}.png`),
+                    setDisplayInfos(""),
+                    setuserIsInvalid(""))
+                  : (setUserImage("/errorUser.png"),
+                    setLocation(""),
+                    setDisplayInfos("none"),
+                    setuserIsInvalid("true"));
                 setUsername(valor);
               }}
               fullWidth
@@ -146,6 +149,7 @@ export default function PaginaInicial() {
               placeholder="Username"
             />
             <Button
+              disabled={`${userIsInvalid}`}
               type="submit"
               label="Log in"
               fullWidth
@@ -218,7 +222,7 @@ export default function PaginaInicial() {
           {/* Photo Area */}
           <Box
             styleSheet={{
-              display: `${showUserImage}`,
+              display: `flex`,
               flexDirection: "column",
               alignItems: "center",
               maxWidth: "200px",
@@ -236,12 +240,13 @@ export default function PaginaInicial() {
                 borderRadius: "50%",
                 marginBottom: "16px",
               }}
-              src={`https://github.com/${username}.png`}
+              src={`${showUserImage}`}
             />
             <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
+                display: `${displayInfos}`,
                 backgroundColor: appConfig.theme.colors.neutrals[900],
                 padding: "3px 10px",
                 borderRadius: "1000px",
@@ -249,7 +254,7 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
-            <Text
+            {/* <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
@@ -258,7 +263,7 @@ export default function PaginaInicial() {
                 padding: "3px 10px",
                 borderRadius: "1000px",
               }}
-            ></Text>
+            ></Text> */}
           </Box>
           {/* Photo Area */}
         </Box>
