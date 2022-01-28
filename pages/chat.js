@@ -15,6 +15,7 @@ export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
+  // Sua lógica vai aqui
   React.useEffect(() => {
     supabaseClient
       .from("mensagens")
@@ -25,24 +26,14 @@ export default function ChatPage() {
       });
   }, []);
 
-  // Sua lógica vai aqui
-  /*
-  // USUARIO
-  - User digita no campo textarea
-  - Aperta enter para enviar
-  - Adicionar o text na listagem -> Array
-
-  // Dev
-  - [x] Campo criado
-  - [x] Usar o onChange, usar o useState( ter if para caso seja enter para limpar a variavel)
-  - [x] Lista de mensagens
-  */
-
-  // ./Sua lógica vai aqui
   function handleDeleteMessage(id) {
     setListaDeMensagens((old) => {
       return old.filter((item) => item.id !== id);
     });
+  }
+
+  function hovered() {
+    return console.log("I was hovered");
   }
 
   function handleNovaMensage(novaMensagem) {
@@ -212,7 +203,11 @@ function Header() {
 
 function MessageList(props) {
   const today = new Date();
-  const time = today.getHours() + ":" + today.getMinutes();
+  const time =
+    today.getHours() +
+    ":" +
+    (today.getMinutes() < 10 ? "0" : "") +
+    today.getMinutes();
   return (
     <Box
       tag="ul"
@@ -255,12 +250,24 @@ function MessageList(props) {
                 }}
               >
                 <Image
+                  onMouseEnter={() => {
+                    <Text>More about this user</Text>;
+                  }}
+                  onMouseLeave={() => console.log("mouse Leave")}
+                  // onClick={() => {
+                  //   console.log("fui clicado");
+                  // }}
                   styleSheet={{
-                    width: "20px",
-                    height: "20px",
+                    width: "30px",
+                    height: "30px",
                     borderRadius: "50%",
                     display: "inline-block",
                     marginRight: "8px",
+                    hover: {
+                      cursor: "pointer",
+                      width: "35px",
+                      height: "35px",
+                    },
                   }}
                   src={`https://github.com/${mensagem.de}.png`}
                 />
@@ -323,3 +330,15 @@ function MessageList(props) {
     </Box>
   );
 }
+
+/*
+  // USUARIO
+  - User digita no campo textarea
+  - Aperta enter para enviar
+  - Adicionar o text na listagem -> Array
+
+  // Dev
+  - [x] Campo criado
+  - [x] Usar o onChange, usar o useState( ter if para caso seja enter para limpar a variavel)
+  - [x] Lista de mensagens
+  */
