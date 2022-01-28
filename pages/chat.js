@@ -18,6 +18,7 @@ export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
+  // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
   const roteamento = useRouter();
   const user = appConfig.username;
 
@@ -282,7 +283,6 @@ function MessageList(props) {
       }}
     >
       {props.mensagem.map((mensagem) => {
-        const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
         const search = "-";
         const replaceWith = "/";
         const date = mensagem.created_at
@@ -318,7 +318,7 @@ function MessageList(props) {
               },
             }}
           >
-            <Box
+            {/* <Box
               styleSheet={{
                 margin: "0.25rem 0",
               }}
@@ -326,7 +326,7 @@ function MessageList(props) {
               <Text styleSheet={{ display: `${showMoreUserInfo}` }}>
                 Click on my face to see my gitHub account.
               </Text>
-            </Box>
+            </Box> */}
             <Box
               styleSheet={{
                 display: "flex",
@@ -351,12 +351,12 @@ function MessageList(props) {
                 <Link href={`https://github.com/${mensagem.de}`}>
                   <Image
                     title={`Open ${mensagem.de} GitHub`}
-                    onMouseEnter={() => {
-                      setShowMoreUserInfo("");
-                    }}
-                    onMouseLeave={() => {
-                      setShowMoreUserInfo("none");
-                    }}
+                    // onMouseEnter={() => {
+                    //   setShowMoreUserInfo("");
+                    // }}
+                    // onMouseLeave={() => {
+                    //   setShowMoreUserInfo("none");
+                    // }}
                     styleSheet={{
                       width: "30px",
                       height: "30px",
