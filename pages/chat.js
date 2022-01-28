@@ -4,7 +4,9 @@ import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
 import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
 import Link from "next/link";
+import Popup from "reactjs-popup";
 
 // Como fazer AJAX --> https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
 const SUPABASE_ANON_KEY =
@@ -16,6 +18,7 @@ export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
+  const roteamento = useRouter();
   const user = appConfig.username;
 
   // Sua lógica vai aqui
@@ -30,10 +33,28 @@ export default function ChatPage() {
       });
   }, []);
 
-  function handleDeleteMessage(id) {
-    setListaDeMensagens((old) => {
-      return old.filter((item) => item.id !== id);
-    });
+  // function handleDeleteMessage(id) {
+  //   setListaDeMensagens((old) => {
+  //     return old.filter((item) => item.id !== id);
+  //   });
+  // }
+
+  function handleDeleteMessage(event, mensagemID, mensagemDe) {
+    event.preventDefault();
+    if (user == mensagemDe) {
+      supabaseClient
+        .from("mensagens")
+        .delete()
+        .match({ id: mensagemID })
+        .then(({ data }) => {
+          const apagarElementoLista = listaDeMensagens.filter(
+            (mensagem) => mensagem.id !== mensagemID
+          );
+          setListaDeMensagens(apagarElementoLista);
+        });
+    } else {
+      window.alert("You can't delete other users messages!");
+    }
   }
 
   function handleNovaMensage(novaMensagem) {
@@ -42,6 +63,9 @@ export default function ChatPage() {
       de: user,
       texto: novaMensagem,
     };
+    if (novaMensagem.de === undefined) {
+      return window.alert("Please Log In before message");
+    }
     if (novaMensagem.length > 0) {
       supabaseClient
         .from("mensagens")
@@ -51,6 +75,8 @@ export default function ChatPage() {
           setListaDeMensagens([data[0], ...listaDeMensagens]);
         });
       setMessagem("");
+    } else {
+      window.alert("You can't send empty messages.");
     }
   }
 
@@ -283,6 +309,7 @@ function MessageList(props) {
               >
                 <Link href={`https://github.com/${mensagem.de}`}>
                   <Image
+                    title={`Open ${mensagem.de} GitHub`}
                     onMouseEnter={() => {
                       <Text>More about this user</Text>;
                     }}
@@ -328,6 +355,7 @@ function MessageList(props) {
                         color: appConfig.theme.colors.neutrals[400],
                       },
                     }}
+                    title={`Open ${mensagem.de} GitHub`}
                     tag="span"
                   >
                     +GitHub
@@ -338,15 +366,16 @@ function MessageList(props) {
                 <Button
                   key={mensagem.id}
                   type="submit"
-                  onClick={() => {
-                    return props.onDelete(mensagem.id);
+                  onClick={(event) => {
+                    return props.onDelete(event, mensagem.id, mensagem.de);
                   }}
+                  title={`Apagar mensagem`}
                   label="X"
                   styleSheet={{
                     backgroundColor: "rgba(180,60,18,1)",
                     borderRadius: "100px",
                     color: appConfig.theme.colors.neutrals[100],
-                    fontSize: "1.2em",
+                    fontSize: "1em",
                     fontWeight: "bold",
                     transition: "0.5s",
                     hover: {
