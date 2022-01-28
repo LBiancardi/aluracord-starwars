@@ -211,6 +211,8 @@ function Header() {
 }
 
 function MessageList(props) {
+  const today = new Date();
+  const time = today.getHours() + ":" + today.getMinutes();
   return (
     <Box
       tag="ul"
@@ -229,6 +231,7 @@ function MessageList(props) {
             key={mensagem.id}
             tag="li"
             styleSheet={{
+              backgroundColor: appConfig.theme.colors.primary[800],
               borderRadius: "5px",
               padding: "6px",
               marginBottom: "12px",
@@ -245,7 +248,12 @@ function MessageList(props) {
                 marginBottom: "8px",
               }}
             >
-              <Box>
+              <Box
+                styleSheet={{
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
                 <Image
                   styleSheet={{
                     width: "20px",
@@ -290,7 +298,25 @@ function MessageList(props) {
                 />
               </Box>
             </Box>
-            {mensagem.texto}
+            <Box
+              styleSheet={{
+                alignItems: "flex-end",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              {mensagem.texto}
+              <Text
+                styleSheet={{
+                  fontSize: "10px",
+                  marginLeft: "8px",
+                  color: appConfig.theme.colors.neutrals[300],
+                }}
+                tag="span"
+              >
+                {time}
+              </Text>
+            </Box>
           </Text>
         );
       })}
