@@ -63,7 +63,8 @@ export default function ChatPage() {
       de: user,
       texto: novaMensagem,
     };
-    if (novaMensagem.de === undefined) {
+
+    if (user === "") {
       return window.alert("Please Log In before message");
     }
     if (novaMensagem.length > 0) {
