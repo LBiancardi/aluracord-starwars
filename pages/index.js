@@ -93,7 +93,7 @@ export default function PaginaInicial() {
               event.preventDefault();
               username.length >= 2
                 ? ((appConfig.username = username),
-                  roteamento.push("/chat"),
+                  roteamento.push(`/chat?username=${username}`),
                   (appConfig.backgroundMobile = themeBgMobile),
                   (appConfig.backgroundDesk = themeBgDesktop))
                 : roteamento.push("/404");

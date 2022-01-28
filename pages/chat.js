@@ -6,7 +6,7 @@ import appConfig from "../config.json";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Popup from "reactjs-popup";
+import { ButtonSendSticker } from "../src/components/ButtonSendSticker";
 
 // Como fazer AJAX --> https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
 const SUPABASE_ANON_KEY =
@@ -18,9 +18,10 @@ export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
   const [isLoaded, setIsLoaded] = React.useState(false);
-  // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
   const roteamento = useRouter();
-  const user = appConfig.username;
+  const user = roteamento.query.username;
+
+  // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
 
   // Sua lógica vai aqui
   React.useEffect(() => {
@@ -195,6 +196,13 @@ export default function ChatPage() {
                   hover: {
                     backgroundColor: appConfig.theme.colors.neutrals[900],
                   },
+                }}
+              />
+              {/* CALLBACK -> Chamada de retorno */}
+              <ButtonSendSticker
+                onStickerClick={(sticker) => {
+                  // console.log("[USANDO] Salva esse sticker no banco");
+                  handleNovaMensage(":sticker:" + sticker);
                 }}
               />
               <Button
@@ -446,7 +454,12 @@ function MessageList(props) {
                 justifyContent: "space-between",
               }}
             >
-              {mensagem.texto}
+              {mensagem.texto.startsWith(":sticker:") ? (
+                <Image src={mensagem.texto.replace(":sticker:", "")} />
+              ) : (
+                mensagem.texto
+              )}
+
               <Text
                 styleSheet={{
                   textAlign: "right",
