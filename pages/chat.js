@@ -262,11 +262,11 @@ function Header() {
 
 function MessageList(props) {
   const today = new Date();
-  const time =
-    today.getHours() +
-    ":" +
-    (today.getMinutes() < 10 ? "0" : "") +
-    today.getMinutes();
+  // const time =
+  //   today.getHours() +
+  //   ":" +
+  //   (today.getMinutes() < 10 ? "0" : "") +
+  //   today.getMinutes();
   return (
     <Box
       tag="ul"
@@ -280,6 +280,16 @@ function MessageList(props) {
       }}
     >
       {props.mensagem.map((mensagem) => {
+        const search = "-";
+        const replaceWith = "/";
+        const date = mensagem.created_at
+          .slice(0, mensagem.created_at.indexOf("T"))
+          .split(search)
+          .join(replaceWith);
+        const hour = mensagem.created_at.slice(
+          mensagem.created_at.indexOf("T") + 1,
+          mensagem.created_at.indexOf("T") + 6
+        );
         return (
           <Text
             key={mensagem.id}
@@ -342,7 +352,7 @@ function MessageList(props) {
                   }}
                   tag="span"
                 >
-                  {new Date().toLocaleDateString()}
+                  {`${date}`}
                 </Text>
                 <Link href={`https://github.com/${mensagem.de}`}>
                   <Text
@@ -402,7 +412,7 @@ function MessageList(props) {
                 }}
                 tag="span"
               >
-                {time}
+                {hour}
               </Text>
             </Box>
           </Text>
