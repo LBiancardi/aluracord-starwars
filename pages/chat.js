@@ -4,6 +4,7 @@ import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../config.json";
 import { createClient } from "@supabase/supabase-js";
+import Link from "next/link";
 
 // Como fazer AJAX --> https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
 const SUPABASE_ANON_KEY =
@@ -14,6 +15,8 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const user = appConfig.username;
 
   // Sua lógica vai aqui
   React.useEffect(() => {
@@ -39,7 +42,7 @@ export default function ChatPage() {
   function handleNovaMensage(novaMensagem) {
     const mensagem = {
       // id: listaDeMensagens.length + 1,
-      de: sessionStorage.getItem("user"),
+      de: user,
       texto: novaMensagem,
     };
     if (novaMensagem.length > 0) {
@@ -249,28 +252,30 @@ function MessageList(props) {
                   display: "flex",
                 }}
               >
-                <Image
-                  onMouseEnter={() => {
-                    <Text>More about this user</Text>;
-                  }}
-                  onMouseLeave={() => console.log("mouse Leave")}
-                  // onClick={() => {
-                  //   console.log("fui clicado");
-                  // }}
-                  styleSheet={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    display: "inline-block",
-                    marginRight: "8px",
-                    hover: {
-                      cursor: "pointer",
-                      width: "35px",
-                      height: "35px",
-                    },
-                  }}
-                  src={`https://github.com/${mensagem.de}.png`}
-                />
+                <Link href={`https://github.com/${mensagem.de}`}>
+                  <Image
+                    onMouseEnter={() => {
+                      <Text>More about this user</Text>;
+                    }}
+                    onMouseLeave={() => console.log("mouse Leave")}
+                    // onClick={() => {
+                    //   console.log("fui clicado");
+                    // }}
+                    styleSheet={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                      marginRight: "8px",
+                      hover: {
+                        cursor: "pointer",
+                        width: "35px",
+                        height: "35px",
+                      },
+                    }}
+                    src={`https://github.com/${mensagem.de}.png`}
+                  />
+                </Link>
                 <Text tag="strong">{mensagem.de}</Text>
                 <Text
                   styleSheet={{
@@ -282,6 +287,23 @@ function MessageList(props) {
                 >
                   {new Date().toLocaleDateString()}
                 </Text>
+                <Link href={`https://github.com/${mensagem.de}`}>
+                  <Text
+                    styleSheet={{
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                      marginLeft: "25px",
+                      color: appConfig.theme.colors.neutrals[300],
+                      hover: {
+                        cursor: "pointer",
+                        color: appConfig.theme.colors.neutrals[400],
+                      },
+                    }}
+                    tag="span"
+                  >
+                    +GitHub
+                  </Text>
+                </Link>
               </Box>
               <Box>
                 <Button

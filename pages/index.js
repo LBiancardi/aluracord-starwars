@@ -92,7 +92,7 @@ export default function PaginaInicial() {
             onSubmit={function (event) {
               event.preventDefault();
               username.length >= 2
-                ? (sessionStorage.setItem("user", username),
+                ? ((appConfig.username = username),
                   roteamento.push("/chat"),
                   (appConfig.backgroundMobile = themeBgMobile),
                   (appConfig.backgroundDesk = themeBgDesktop))
