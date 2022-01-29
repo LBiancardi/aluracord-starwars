@@ -14,6 +14,16 @@ const SUPABASE_ANON_KEY =
 const SUPABASE_URL = "https://adnlwaiaaxkouadlxgoq.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function escutaMensagensEmTempoReal(adicionaMensagem) {
+  return supabaseClient
+    .from("mensagens")
+    .on("INSERT", (respostaLive) => {
+      console.log("ouve nova mensagem");
+      adicionaMensagem(respostaLive.new);
+    })
+    .subscribe();
+}
+
 export default function ChatPage() {
   const [mensagem, setMessagem] = React.useState("");
   const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
@@ -33,13 +43,13 @@ export default function ChatPage() {
         setListaDeMensagens(data);
         setIsLoaded(true);
       });
+    escutaMensagensEmTempoReal((novaMensagem) => {
+      console.log(`nova msg: ${novaMensagem}`);
+      setListaDeMensagens((valorAtualDaLista) => {
+        return [novaMensagem, ...valorAtualDaLista];
+      });
+    });
   }, []);
-
-  // function handleDeleteMessage(id) {
-  //   setListaDeMensagens((old) => {
-  //     return old.filter((item) => item.id !== id);
-  //   });
-  // }
 
   function handleDeleteMessage(event, mensagemID, mensagemDe) {
     event.preventDefault();
@@ -75,7 +85,7 @@ export default function ChatPage() {
         .insert([mensagem])
         .then(({ data }) => {
           console.log("Criando mensagem: ", data);
-          setListaDeMensagens([data[0], ...listaDeMensagens]);
+          // setListaDeMensagens([data[0], ...listaDeMensagens]);
         });
       setMessagem("");
     } else {
@@ -458,7 +468,7 @@ function MessageList(props) {
                 <Image
                   styleSheet={{
                     width: "50%",
-                    maxWidth: "250px",
+                    maxWidth: "120px",
                   }}
                   src={mensagem.texto.replace(":sticker:", "")}
                 />
