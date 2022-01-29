@@ -93,27 +93,6 @@ export default function ChatPage() {
     }
   }
 
-  // function createUserLink(text, user) {
-  //   return <Link
-  //     href={`https://github.com/${mensagem.de}`}
-  //     styleSheet={{
-  //       cursor: "pointer",
-  //     }}
-  //   >
-  //     <Text
-  //       styleSheet={{
-  //         display: showInfo,
-  //         fontWeight: "bolder",
-  //         hover: {
-  //           cursor: "pointer",
-  //         },
-  //       }}
-  //     >
-  //       +Github
-  //     </Text>
-  //   </Link>;
-  // }
-
   if (!isLoaded) {
     return (
       <>
@@ -311,10 +290,11 @@ function MessageList(props) {
     <Box
       tag="ul"
       styleSheet={{
-        overflow: "auto",
+        overflowY: "scroll",
         display: "flex",
         flexDirection: "column-reverse",
         flex: 1,
+        position: "relative",
         color: appConfig.theme.colors.neutrals["200"],
         marginBottom: "16px",
         width: "100%",

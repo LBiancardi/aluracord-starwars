@@ -26,9 +26,9 @@ function TitleText(props) {
 async function gitHubRequest(username) {
   try {
     const res = await fetch(`https://api.github.com/users/${username}`);
-    const userInfos = await res.json();
-    const location = userInfos.location;
-    return location;
+    return (userInfos = await res.json());
+    // const location = userInfos.location;
+    // return location;
   } catch (err) {
     console.error(err);
   }
@@ -39,7 +39,7 @@ export default function PaginaInicial() {
   const [userFound, setUserFound] = React.useState("none");
   const [location, setLocation] = React.useState("");
   const [displayInfos, setDisplayInfos] = React.useState("none");
-  const [userIsInvalid, setuserIsInvalid] = React.useState("true");
+  const [userIsInvalid, setuserIsInvalid] = React.useState(false);
   const roteamento = useRouter();
   const [showUserImage, setUserImage] = React.useState("/errorUser.png");
   const [theme, setTheme] = React.useState("");
@@ -92,7 +92,7 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (event) {
               event.preventDefault();
-              !userIsInvalid
+              !userIsInvalid || location.length === 0
                 ? (roteamento.push(`/chat?username=${username}`),
                   (appConfig.backgroundMobile = themeBgMobile),
                   (appConfig.backgroundDesk = themeBgDesktop))
@@ -138,11 +138,12 @@ export default function PaginaInicial() {
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
                 valor.length >= 2
-                  ? (setUserImage(`https://github.com/${valor}.png`),
-                    setuserIsInvalid(""))
-                  : (setUserImage("/errorUser.png"),
-                    setDisplayInfos("none"),
-                    setuserIsInvalid("true"));
+                  ? setUserImage(
+                      `https://github.com/${valor}.png`,
+                      setLocation(""),
+                      setuserIsInvalid(false)
+                    )
+                  : (setUserImage("/errorUser.png"), setDisplayInfos("none"));
                 setUsername(valor);
               }}
               fullWidth
@@ -177,7 +178,6 @@ export default function PaginaInicial() {
                 }}
               />
               <Button
-                disabled={`${userIsInvalid}`}
                 type="button"
                 label="Search User"
                 fullWidth
@@ -188,21 +188,26 @@ export default function PaginaInicial() {
                   mainColorStrong: appConfig.theme.colors.primary[600],
                 }}
                 onClick={async () => {
-                  const userLocation = await gitHubRequest(username);
-                  console.log(userLocation);
+                  const res = await fetch(
+                    `https://api.github.com/users/${username}`
+                  );
+                  const userInfos = await res.json();
+                  const userLocation = userInfos.location;
+
+                  console.log(userInfos);
                   !userLocation
                     ? setLocation(`${username} is not from this world`)
                     : setLocation(userLocation);
-                  username.length >= 2
+                  res.ok
                     ? (setUserImage(`https://github.com/${username}.png`),
                       setDisplayInfos(""),
-                      setuserIsInvalid(""),
-                      setUserFound("none"))
+                      setUserFound("none"),
+                      setuserIsInvalid(""))
                     : (setUserImage("/errorUser.png"),
                       setLocation(""),
                       setDisplayInfos("none"),
-                      setuserIsInvalid("true"),
-                      setUserFound(""));
+                      setUserFound(""),
+                      setuserIsInvalid(false));
                   setUsername(username);
                 }}
               />
@@ -274,7 +279,6 @@ export default function PaginaInicial() {
               alignItems: "center",
               maxWidth: "200px",
               padding: "16px",
-              // backgroundColor: appConfig.theme.colors.neutrals['800'],
               border: "1px solid",
               borderColor: appConfig.theme.colors.primary["700"],
               borderRadius: "10px",
