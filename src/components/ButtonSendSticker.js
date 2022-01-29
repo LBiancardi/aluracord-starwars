@@ -19,7 +19,7 @@ export function ButtonSendSticker(props) {
           minHeight: "50px",
           fontSize: "20px",
           marginBottom: "8px",
-          marginRight: '0.7rem',
+          marginRight: "0.7rem",
           lineHeight: "0",
           display: "flex",
           alignItems: "center",
@@ -36,6 +36,7 @@ export function ButtonSendSticker(props) {
       {isOpen && (
         <Box
           styleSheet={{
+            overflow: "auto",
             display: "flex",
             flexDirection: "column",
             borderRadius: "5px",
@@ -56,7 +57,7 @@ export function ButtonSendSticker(props) {
         >
           <Text
             styleSheet={{
-              color: appConfig.theme.colors.neutrals["000"],
+              color: appConfig.theme.colors.neutrals["300"],
               fontWeight: "bold",
             }}
           >
@@ -67,16 +68,19 @@ export function ButtonSendSticker(props) {
             styleSheet={{
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
               flex: 1,
               paddingTop: "16px",
-              overflow: "scroll",
+              overflowY: "auto",
+              margin: 0,
+              padding: 0,
+              listStyle: "none",
+              height: "100%",
             }}
           >
             {appConfig.stickers.map((sticker) => (
               <Text
                 onClick={() => {
-                  // console.log('[DENTRO DO COMPONENTE] Clicou no sticker:', sticker);
                   if (Boolean(props.onStickerClick)) {
                     props.onStickerClick(sticker);
                   }
@@ -84,7 +88,7 @@ export function ButtonSendSticker(props) {
                 tag="li"
                 key={sticker}
                 styleSheet={{
-                  width: "50%",
+                  width: "49%",
                   borderRadius: "5px",
                   padding: "10px",
                   focus: {

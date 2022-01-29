@@ -23,7 +23,7 @@ function TitleText(props) {
   return props === "" ? "Choose your side" : `Welcome to the ${props} side`;
 }
 
-const gitHubRequest = async (username) => {
+async function gitHubRequest(username) {
   try {
     const res = await fetch(`https://api.github.com/users/${username}`);
     const userInfos = await res.json();
@@ -32,10 +32,11 @@ const gitHubRequest = async (username) => {
   } catch (err) {
     console.error(err);
   }
-};
+}
 
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("");
+  const [userFound, setUserFound] = React.useState("none");
   const [location, setLocation] = React.useState("");
   const [displayInfos, setDisplayInfos] = React.useState("none");
   const [userIsInvalid, setuserIsInvalid] = React.useState("true");
@@ -91,12 +92,11 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (event) {
               event.preventDefault();
-              username.length >= 2
-                ? ((appConfig.username = username),
-                  roteamento.push(`/chat?username=${username}`),
+              !userIsInvalid
+                ? (roteamento.push(`/chat?username=${username}`),
                   (appConfig.backgroundMobile = themeBgMobile),
                   (appConfig.backgroundDesk = themeBgDesktop))
-                : roteamento.push("/404");
+                : setUserFound("");
             }}
             styleSheet={{
               display: "flex",
@@ -120,19 +120,27 @@ export default function PaginaInicial() {
             >
               {appConfig.name}
             </Text>
-
+            <Text
+              styleSheet={{
+                display: `${userFound}`,
+                textAlign: "left",
+                color: "red",
+                marginBottom: "0.3rem",
+                width: "100%",
+              }}
+            >
+              User not found
+            </Text>
             <TextField
               value={username}
-              onChange={async function (event) {
+              onChange={function (event) {
                 // Onde esta o valor?
                 const valor = event.target.value;
                 // Atualizar o valor da variavel usando react
                 valor.length >= 2
                   ? (setUserImage(`https://github.com/${valor}.png`),
-                    setDisplayInfos(""),
                     setuserIsInvalid(""))
                   : (setUserImage("/errorUser.png"),
-                    setLocation(""),
                     setDisplayInfos("none"),
                     setuserIsInvalid("true"));
                 setUsername(valor);
@@ -146,20 +154,59 @@ export default function PaginaInicial() {
                   backgroundColor: appConfig.theme.colors.neutrals[800],
                 },
               }}
-              placeholder="Username"
+              placeholder="Github Username"
             />
-            <Button
-              disabled={`${userIsInvalid}`}
-              type="submit"
-              label="Log in"
-              fullWidth
-              buttonColors={{
-                contrastColor: appConfig.theme.colors.neutrals["050"],
-                mainColor: appConfig.theme.colors.primary[500],
-                mainColorLight: appConfig.theme.colors.primary[400],
-                mainColorStrong: appConfig.theme.colors.primary[600],
+            <Box
+              styleSheet={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                gap: "1rem",
               }}
-            />
+            >
+              <Button
+                disabled={`${userIsInvalid}`}
+                type="submit"
+                label="Log in"
+                fullWidth
+                buttonColors={{
+                  contrastColor: appConfig.theme.colors.neutrals["050"],
+                  mainColor: appConfig.theme.colors.primary[500],
+                  mainColorLight: appConfig.theme.colors.primary[400],
+                  mainColorStrong: appConfig.theme.colors.primary[600],
+                }}
+              />
+              <Button
+                disabled={`${userIsInvalid}`}
+                type="button"
+                label="Search User"
+                fullWidth
+                buttonColors={{
+                  contrastColor: appConfig.theme.colors.neutrals["800"],
+                  mainColor: appConfig.theme.colors.primary[100],
+                  mainColorLight: appConfig.theme.colors.primary[400],
+                  mainColorStrong: appConfig.theme.colors.primary[600],
+                }}
+                onClick={async () => {
+                  const userLocation = await gitHubRequest(username);
+                  console.log(userLocation);
+                  !userLocation
+                    ? setLocation(`${username} is not from this world`)
+                    : setLocation(userLocation);
+                  username.length >= 2
+                    ? (setUserImage(`https://github.com/${username}.png`),
+                      setDisplayInfos(""),
+                      setuserIsInvalid(""),
+                      setUserFound("none"))
+                    : (setUserImage("/errorUser.png"),
+                      setLocation(""),
+                      setDisplayInfos("none"),
+                      setuserIsInvalid("true"),
+                      setUserFound(""));
+                  setUsername(username);
+                }}
+              />
+            </Box>
 
             <Box
               styleSheet={{
@@ -254,16 +301,19 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
-            {/* <Text
+            <Text
               variant="body4"
               styleSheet={{
                 color: appConfig.theme.colors.neutrals[200],
+                display: `${displayInfos}`,
                 marginTop: "0.5rem",
                 backgroundColor: appConfig.theme.colors.neutrals[900],
                 padding: "3px 10px",
                 borderRadius: "1000px",
               }}
-            ></Text> */}
+            >
+              {location}
+            </Text>
           </Box>
           {/* Photo Area */}
         </Box>

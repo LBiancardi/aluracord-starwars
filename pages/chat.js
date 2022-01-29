@@ -30,6 +30,7 @@ export default function ChatPage() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const roteamento = useRouter();
   const user = roteamento.query.username;
+  console.log(roteamento.query);
 
   // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
 
