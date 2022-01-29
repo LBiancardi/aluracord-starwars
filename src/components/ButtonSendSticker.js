@@ -24,7 +24,7 @@ export function ButtonSendSticker(props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: appConfig.theme.colors.neutrals[300],
+          backgroundColor: "rgba(0,0,0,0)",
           filter: isOpen ? "grayscale(0)" : "grayscale(1)",
           hover: {
             filter: "grayscale(0)",
@@ -55,14 +55,37 @@ export function ButtonSendSticker(props) {
           }}
           onClick={() => setOpenState(false)}
         >
-          <Text
+          <Box
             styleSheet={{
-              color: appConfig.theme.colors.neutrals["300"],
-              fontWeight: "bold",
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "1rem",
             }}
           >
-            Stickers
-          </Text>
+            <Text
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals["300"],
+                fontWeight: "bold",
+              }}
+            >
+              Stickers
+            </Text>
+            <Text
+              styleSheet={{
+                color: "rgba(255,255,255,0.5)",
+                padding: "0.25rem",
+                fontSize: "0.75em",
+                border: "1px rgba(255,255,255,0.5) solid",
+                borderRadius: "8px",
+                hover: {
+                  borderColor: "white",
+                  cursor: "pointer",
+                },
+              }}
+            >
+              close
+            </Text>
+          </Box>
           <Box
             tag="ul"
             styleSheet={{

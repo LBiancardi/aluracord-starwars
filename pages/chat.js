@@ -53,7 +53,7 @@ export default function ChatPage() {
 
   function handleDeleteMessage(event, mensagemID, mensagemDe) {
     event.preventDefault();
-    if (user == mensagemDe) {
+    if (user.toUpperCase() === mensagemDe.toUpperCase()) {
       supabaseClient
         .from("mensagens")
         .delete()
@@ -84,7 +84,7 @@ export default function ChatPage() {
         .from("mensagens")
         .insert([mensagem])
         .then(({ data }) => {
-          console.log("Criando mensagem: ", data);
+          // console.log("Criando mensagem: ", data);
           // setListaDeMensagens([data[0], ...listaDeMensagens]);
         });
       setMessagem("");
@@ -92,6 +92,27 @@ export default function ChatPage() {
       window.alert("You can't send empty messages.");
     }
   }
+
+  // function createUserLink(text, user) {
+  //   return <Link
+  //     href={`https://github.com/${mensagem.de}`}
+  //     styleSheet={{
+  //       cursor: "pointer",
+  //     }}
+  //   >
+  //     <Text
+  //       styleSheet={{
+  //         display: showInfo,
+  //         fontWeight: "bolder",
+  //         hover: {
+  //           cursor: "pointer",
+  //         },
+  //       }}
+  //     >
+  //       +Github
+  //     </Text>
+  //   </Link>;
+  // }
 
   if (!isLoaded) {
     return (
@@ -156,7 +177,7 @@ export default function ChatPage() {
             padding: "32px",
           }}
         >
-          <Header />
+          <Header username={user} />
           <Box
             styleSheet={{
               position: "relative",
@@ -172,6 +193,7 @@ export default function ChatPage() {
             <MessageList
               mensagem={listaDeMensagens}
               onDelete={handleDeleteMessage}
+              currentUser={user}
             />
             <Box
               as="form"
@@ -239,7 +261,7 @@ export default function ChatPage() {
                   </svg>
                 }
                 styleSheet={{
-                  backgroundColor: appConfig.theme.colors.neutrals[800],
+                  backgroundColor: "rgba(0,0,0,0)",
                   color: appConfig.theme.colors.neutrals[100],
                   transition: "0.5s",
                   marginBottom: "6px",
@@ -256,7 +278,7 @@ export default function ChatPage() {
   }
 }
 
-function Header() {
+function Header(props) {
   return (
     <>
       <Box
@@ -268,7 +290,7 @@ function Header() {
           justifyContent: "space-between",
         }}
       >
-        <Text variant="heading5">Chat</Text>
+        <Text variant="heading5">Welcome, {props.username}</Text>
         <Button
           variant="tertiary"
           colorVariant="light"
@@ -281,13 +303,10 @@ function Header() {
 }
 
 function MessageList(props) {
-  const [showInfo, setShowInfo] = React.useState("none");
-  const today = new Date();
-  // const time =
-  //   today.getHours() +
-  //   ":" +
-  //   (today.getMinutes() < 10 ? "0" : "") +
-  //   today.getMinutes();
+  // const [showInfo, setShowInfo] = React.useState("");
+  // const today = new Date();
+  const currentUser = props.currentUser;
+
   return (
     <Box
       tag="ul"
@@ -302,6 +321,14 @@ function MessageList(props) {
       }}
     >
       {props.mensagem.map((mensagem) => {
+        let marginLeftDesk = "0";
+        let marginLeftMobile = "0";
+        let currentUserMessageBg = appConfig.theme.colors.primary[800];
+        currentUser.toUpperCase() === mensagem.de.toUpperCase()
+          ? ((marginLeftDesk = "14%"),
+            (marginLeftMobile = "10%"),
+            (currentUserMessageBg = appConfig.theme.colors.primary[600]))
+          : false;
         const search = "-";
         const replaceWith = "/";
         const date = mensagem.created_at
@@ -317,7 +344,7 @@ function MessageList(props) {
             key={mensagem.id}
             tag="li"
             styleSheet={{
-              backgroundColor: appConfig.theme.colors.primary[800],
+              backgroundColor: currentUserMessageBg,
               borderRadius: "5px",
               display: "flex",
               flexDirection: "column",
@@ -328,10 +355,10 @@ function MessageList(props) {
                 xs: "90%",
                 md: "85%",
               },
-              // marginLeft: {
-              //   xs: "10%",
-              //   md: "15%",
-              // },
+              marginLeft: {
+                xs: marginLeftMobile,
+                md: marginLeftDesk,
+              },
               hover: {
                 backgroundColor: appConfig.theme.colors.neutrals[700],
               },
@@ -339,22 +366,49 @@ function MessageList(props) {
           >
             <Box
               styleSheet={{
+                display: "flex",
                 margin: "0.25rem 0",
               }}
             >
-              <Link href={`https://github.com/${mensagem.de}`}>
+              <Link
+                href={`https://github.com/${mensagem.de}`}
+                styleSheet={{
+                  cursor: "pointer",
+                }}
+              >
                 <Text
                   styleSheet={{
-                    display: showInfo,
                     fontWeight: "bolder",
+                    fontSize: "1em",
+                    minWidth: "70px",
+                    width: "10%",
                     hover: {
                       cursor: "pointer",
                     },
                   }}
-                >
-                  +GitHub
-                </Text>
+                ></Text>
               </Link>
+
+              {/* <Text
+                styleSheet={{
+                  fontWeight: "normal",
+                  fontSize: "0.9em",
+                  minWidth: "90px",
+                  width: "10%",
+                }}
+              >
+                Repositories: 10
+              </Text>
+              <Text
+                styleSheet={{
+                  fontWeight: "normal",
+                  fontSize: "0.9em",
+                  minWidth: "90px",
+                  width: "10%",
+                }}
+              >
+                Followers: 25
+              </Text> */}
             </Box>
             <Box
               styleSheet={{
@@ -371,21 +425,11 @@ function MessageList(props) {
                   },
                   display: "flex",
                   flexWrap: "wrap",
-                  // flexDirection: {
-                  //   xs: "column",
-                  //   md: "row",
-                  // },
                 }}
               >
                 <Link href={`https://github.com/${mensagem.de}`}>
                   <Image
                     title={`Open ${mensagem.de} GitHub`}
-                    // onMouseEnter={() => {
-                    //   setShowMoreUserInfo("");
-                    // }}
-                    // onMouseLeave={() => {
-                    //   setShowMoreUserInfo("none");
-                    // }}
                     styleSheet={{
                       width: "30px",
                       height: "30px",
@@ -419,11 +463,23 @@ function MessageList(props) {
                 >
                   {`${date}`}
                 </Text>
-                {/* <Text
-                  // onClick={(event) => {
-                  //   console.log(event.target.parentElement.parentElement.parentElement.firstChild.style);
-                  //   // showInfo === "none" ? setShowInfo("") : setShowInfo("none");
-                  // }}
+                <Text
+                  onClick={(event) => {
+                    let moreInfo =
+                      event.target.parentNode.parentNode.parentNode.firstChild
+                        .firstChild;
+                    let moreInfo2 =
+                      event.target.parentNode.parentNode.parentNode.firstChild
+                        .styleSheet;
+                    console.log(moreInfo2);
+                    event.target.innerText === "show"
+                      ? ((event.target.innerText = "hide"),
+                        ((moreInfo.innerText = "+GitHub"), (showInfo = "")))
+                      : ((event.target.innerText = "show"),
+                        (moreInfo.innerText = ""),
+                        (showInfo = "none"));
+                    console.log(showInfo);
+                  }}
                   styleSheet={{
                     fontWeight: "bold",
                     fontSize: "0.9em",
@@ -432,7 +488,7 @@ function MessageList(props) {
                       sm: "25px",
                     },
                     marginTop: {
-                      xs: "5px",
+                      xs: "3px",
                       sm: "0",
                     },
                     color: appConfig.theme.colors.neutrals[0],
@@ -445,7 +501,7 @@ function MessageList(props) {
                   tag="span"
                 >
                   show
-                </Text> */}
+                </Text>
               </Box>
               <Box>
                 <Button
@@ -455,18 +511,20 @@ function MessageList(props) {
                     return props.onDelete(event, mensagem.id, mensagem.de);
                   }}
                   title={`Apagar mensagem`}
-                  label="X"
                   styleSheet={{
-                    backgroundColor: "rgba(180,60,18,1)",
                     borderRadius: "100px",
                     color: appConfig.theme.colors.neutrals[100],
                     fontSize: "1em",
                     fontWeight: "bold",
                     transition: "0.5s",
-                    hover: {
-                      backgroundColor: "rgba(180,60,18,0.7)",
-                    },
                   }}
+                  buttonColors={{
+                    contrastColor: "#FDFDFD",
+                    mainColor: "rgba(0, 0, 0, 0.0)",
+                    mainColorStrong: "rgba(255, 107, 107, .35)",
+                  }}
+                  colorVariant="negative"
+                  iconName="FaRegTrashAlt"
                 />
               </Box>
             </Box>
