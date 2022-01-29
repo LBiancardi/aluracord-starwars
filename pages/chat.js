@@ -468,10 +468,6 @@ function MessageList(props) {
                     let moreInfo =
                       event.target.parentNode.parentNode.parentNode.firstChild
                         .firstChild;
-                    let moreInfo2 =
-                      event.target.parentNode.parentNode.parentNode.firstChild
-                        .styleSheet;
-                    console.log(moreInfo2);
                     event.target.innerText === "show"
                       ? ((event.target.innerText = "hide"),
                         (moreInfo.innerText = "+GitHub"))
