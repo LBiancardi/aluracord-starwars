@@ -23,17 +23,6 @@ function TitleText(props) {
   return props === "" ? "Choose your side" : `Welcome to the ${props} side`;
 }
 
-async function gitHubRequest(username) {
-  try {
-    const res = await fetch(`https://api.github.com/users/${username}`);
-    return (userInfos = await res.json());
-    // const location = userInfos.location;
-    // return location;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 export default function PaginaInicial() {
   const [username, setUsername] = React.useState("");
   const [userFound, setUserFound] = React.useState("none");
