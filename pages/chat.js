@@ -474,11 +474,9 @@ function MessageList(props) {
                     console.log(moreInfo2);
                     event.target.innerText === "show"
                       ? ((event.target.innerText = "hide"),
-                        ((moreInfo.innerText = "+GitHub"), (showInfo = "")))
+                        (moreInfo.innerText = "+GitHub"))
                       : ((event.target.innerText = "show"),
-                        (moreInfo.innerText = ""),
-                        (showInfo = "none"));
-                    console.log(showInfo);
+                        (moreInfo.innerText = ""));
                   }}
                   styleSheet={{
                     fontWeight: "bold",
