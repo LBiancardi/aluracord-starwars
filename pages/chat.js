@@ -328,6 +328,10 @@ function MessageList(props) {
               borderRadius: "5px",
               display: "flex",
               flexDirection: "column",
+              marginLeft: {
+                xs: "5px",
+                sm: "7px",
+              },
               padding: "6px",
               marginBottom: "12px",
               wordBreak: "break-word",
@@ -347,6 +351,7 @@ function MessageList(props) {
             <Box
               styleSheet={{
                 display: "flex",
+                flexWrap: "wrap",
                 margin: "0.25rem 0",
               }}
             >
@@ -369,32 +374,29 @@ function MessageList(props) {
                 ></Text>
               </Link>
 
-              {/* <Text
-                styleSheet={{
-                  fontWeight: "normal",
-                  fontSize: "0.9em",
-                  minWidth: "90px",
-                  width: "10%",
-                }}
-              >
-                Repositories: 10
-              </Text>
               <Text
                 styleSheet={{
                   fontWeight: "normal",
-                  fontSize: "0.9em",
-                  minWidth: "90px",
+                  fontSize: "0.85em",
+                  minWidth: "100px",
                   width: "10%",
                 }}
-              >
-                Followers: 25
-              </Text> */}
+              ></Text>
+              <Text
+                styleSheet={{
+                  fontWeight: "normal",
+                  fontSize: "0.85em",
+                  minWidth: "100px",
+                  width: "10%",
+                }}
+              ></Text>
             </Box>
             <Box
               styleSheet={{
                 display: "flex",
                 justifyContent: "space-between",
                 marginBottom: "8px",
+                minHeight: "90px",
               }}
             >
               <Box
@@ -405,6 +407,9 @@ function MessageList(props) {
                   },
                   display: "flex",
                   flexWrap: "wrap",
+                  gap: "0 0.5rem",
+                  width: { xs: "80%" },
+                  maxWidth: "300px",
                 }}
               >
                 <Link href={`https://github.com/${mensagem.de}`}>
@@ -416,6 +421,10 @@ function MessageList(props) {
                       borderRadius: "50%",
                       display: "inline-block",
                       marginRight: "8px",
+                      marginLeft: {
+                        xs: "5px",
+                        sm: "7px",
+                      },
                       hover: {
                         cursor: "pointer",
                         width: "35px",
@@ -425,17 +434,23 @@ function MessageList(props) {
                     src={`https://github.com/${mensagem.de}.png`}
                   />
                 </Link>
-                <Text tag="strong">{mensagem.de}</Text>
+                <Text
+                  styleSheet={{
+                    marginLeft: {
+                      xs: "5px",
+                      sm: "7px",
+                    },
+                  }}
+                  tag="strong"
+                >
+                  {mensagem.de}
+                </Text>
                 <Text
                   styleSheet={{
                     fontSize: "12px",
                     marginLeft: {
-                      xs: "10px",
-                      sm: "8px",
-                    },
-                    marginTop: {
                       xs: "5px",
-                      sm: "0",
+                      sm: "7px",
                     },
                     color: appConfig.theme.colors.neutrals[300],
                   }}
@@ -444,26 +459,33 @@ function MessageList(props) {
                   {`${date}`}
                 </Text>
                 <Text
-                  onClick={(event) => {
+                  onClick={async (event) => {
+                    const res = await fetch(
+                      `https://api.github.com/users/${mensagem.de}`
+                    );
+                    const userInfos = await res.json();
+                    console.log(userInfos);
                     let moreInfo =
-                      event.target.parentNode.parentNode.parentNode.firstChild
-                        .firstChild;
+                      event.target.parentNode.parentNode.parentNode.firstChild;
+                    let gitHubLink = moreInfo.childNodes[0];
+                    let gitHubRepos = moreInfo.childNodes[1];
+                    let gitHubFollowers = moreInfo.childNodes[2];
                     event.target.innerText === "show"
                       ? ((event.target.innerText = "hide"),
-                        (moreInfo.innerText = "+GitHub"))
+                        (gitHubLink.innerText = "+GitHub"),
+                        (gitHubRepos.innerText = `Repos: ${userInfos.public_repos}`),
+                        (gitHubFollowers.innerText = `Followers: ${userInfos.followers}`))
                       : ((event.target.innerText = "show"),
-                        (moreInfo.innerText = ""));
+                        (gitHubLink.innerText = ""),
+                        (gitHubRepos.innerText = ""),
+                        (gitHubFollowers.innerText = ``));
                   }}
                   styleSheet={{
                     fontWeight: "bold",
                     fontSize: "0.9em",
                     marginLeft: {
-                      xs: "10px",
+                      xs: "0",
                       sm: "25px",
-                    },
-                    marginTop: {
-                      xs: "3px",
-                      sm: "0",
                     },
                     color: appConfig.theme.colors.neutrals[0],
                     hover: {
