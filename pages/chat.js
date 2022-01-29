@@ -30,7 +30,6 @@ export default function ChatPage() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const roteamento = useRouter();
   const user = roteamento.query.username;
-  console.log(roteamento.query);
 
   // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
 
@@ -282,6 +281,7 @@ function Header() {
 }
 
 function MessageList(props) {
+  const [showInfo, setShowInfo] = React.useState("none");
   const today = new Date();
   // const time =
   //   today.getHours() +
@@ -337,15 +337,25 @@ function MessageList(props) {
               },
             }}
           >
-            {/* <Box
+            <Box
               styleSheet={{
                 margin: "0.25rem 0",
               }}
             >
-              <Text styleSheet={{ display: `${showMoreUserInfo}` }}>
-                Click on my face to see my gitHub account.
-              </Text>
-            </Box> */}
+              <Link href={`https://github.com/${mensagem.de}`}>
+                <Text
+                  styleSheet={{
+                    display: showInfo,
+                    fontWeight: "bolder",
+                    hover: {
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  +GitHub
+                </Text>
+              </Link>
+            </Box>
             <Box
               styleSheet={{
                 display: "flex",
@@ -409,31 +419,33 @@ function MessageList(props) {
                 >
                   {`${date}`}
                 </Text>
-                <Link href={`https://github.com/${mensagem.de}`}>
-                  <Text
-                    styleSheet={{
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                      marginLeft: {
-                        xs: "10px",
-                        sm: "25px",
-                      },
-                      marginTop: {
-                        xs: "5px",
-                        sm: "0",
-                      },
-                      color: appConfig.theme.colors.neutrals[300],
-                      hover: {
-                        cursor: "pointer",
-                        color: appConfig.theme.colors.neutrals[400],
-                      },
-                    }}
-                    title={`Open ${mensagem.de} GitHub`}
-                    tag="span"
-                  >
-                    +GitHub
-                  </Text>
-                </Link>
+                {/* <Text
+                  // onClick={(event) => {
+                  //   console.log(event.target.parentElement.parentElement.parentElement.firstChild.style);
+                  //   // showInfo === "none" ? setShowInfo("") : setShowInfo("none");
+                  // }}
+                  styleSheet={{
+                    fontWeight: "bold",
+                    fontSize: "0.9em",
+                    marginLeft: {
+                      xs: "10px",
+                      sm: "25px",
+                    },
+                    marginTop: {
+                      xs: "5px",
+                      sm: "0",
+                    },
+                    color: appConfig.theme.colors.neutrals[0],
+                    hover: {
+                      cursor: "pointer",
+                      color: appConfig.theme.colors.neutrals[400],
+                    },
+                  }}
+                  title={`Open ${mensagem.de} GitHub`}
+                  tag="span"
+                >
+                  show
+                </Text> */}
               </Box>
               <Box>
                 <Button
