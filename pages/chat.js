@@ -9,17 +9,10 @@ import Link from "next/link";
 import { ButtonSendSticker } from "../src/components/ButtonSendSticker";
 
 // Como fazer AJAX --> https://medium.com/@omariosouto/entendendo-como-fazer-ajax-com-a-fetchapi-977ff20da3c6
-// const SUPABASE_ANON_KEY =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMyOTMyMiwiZXhwIjoxOTU4OTA1MzIyfQ.D2B8cdDQygVqcbWNFnFHZHryoCUaPXnYBsI1DA4y1C0";
-// const SUPABASE_URL = "https://adnlwaiaaxkouadlxgoq.supabase.co";
+
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-const test = process.env.REACT_APP_SUPABASE_ANON_KEY;
-const test2 = process.env.REACT_APP_SUPABASE_URL;
-// console.log(test);
-// console.log(test2);
 
 function escutaMensagensEmTempoReal(adicionaMensagem) {
   return supabaseClient
@@ -40,8 +33,6 @@ export default function ChatPage() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const roteamento = useRouter();
   const user = roteamento.query.username;
-
-  // const [showMoreUserInfo, setShowMoreUserInfo] = React.useState("none");
 
   // Sua lógica vai aqui
   React.useEffect(() => {
