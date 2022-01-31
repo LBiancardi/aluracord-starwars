@@ -31,15 +31,19 @@ function GlobalStyle() {
           flex: 1;
         }
         /* ./App fit Height */
-
-        ul::-webkit-scrollbar,
-        textarea::-webkit-scrollbar {
-          width: 5px;
+        /* width */
+        ::-webkit-scrollbar {
+          width: 6px;
         }
-        ul::-webkit-scrollbar-thumb,
-        textarea::-webkit-scrollbar-thumb {
-          background-color: rgba(36, 39, 52, 0.7);
-          border-radius: 50px;
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #181f25;
+        }
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #52667a;
+          border-radius: 12px;
+          transition: 0.6s ease all;
         }
       `}</style>
     </head>
